@@ -21,7 +21,7 @@ app.get("/videos", (req, res) => {
 
 app.get("/videos/:id", (req, res) => {
   const id = req.params.id;
-  const detailsData = require("./Data/Videodetails.json");
+  const detailsData = require("./Data/videos.json");
   const details = detailsData.find((detail) => detail.id === id);
   if (details) {
     res.send(details);
