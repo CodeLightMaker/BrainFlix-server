@@ -104,6 +104,26 @@ app.delete("/videos/:videoId/comments/:commentId", (req, res) => {
   }
 });
 
+app.put("/videos/:id/likes", (req, res) => {
+  const { id } = req.params;
+
+  try {
+    let videos = require(videosDataPath);
+    const videoIndex = videos.findIndex((video) => video.id === id);
+
+    if (videoIndex !== -1) {
+      videos[videoIndex].likes++;
+      fs.writeFileSync(videosDataPath, JSON.stringify(videos, null, 2));
+      res.status(200).json(videos[videoIndex]);
+    } else {
+      res.status(404).json({ error: "Video not found" });
+    }
+  } catch (error) {
+    console.error("Error updating likes:", error);
+    res.status(500).json({ error: "Error updating likes" });
+  }
+});
+
 app.listen(port, () => {
-  console.log(`Brainflix is listening on port ${port}`)
+  console.log(`Brainflix server is listening on port ${port}`);
 });
